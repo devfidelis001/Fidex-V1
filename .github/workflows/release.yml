@@ -22,15 +22,60 @@ jobs:
           foreach ($f in "FIDEXSI.exe","resources\python\python.exe","resources\ollama\ollama.exe","resources\backend\app\main.py") { if (!(Test-Path "dist\win-unpacked\$f")) { throw "missing $f" } }
           & dist\win-unpacked\resources\python\python.exe -c "import sys; sys.path.insert(0,'dist/win-unpacked/resources/backend'); import app.main; print('backend import OK')"
           if (!(Test-Path dist\FIDEX-SI-Setup.exe)) { throw "installer missing" }
+      - name: Show electron-builder install config
+        shell: pwsh
+        run: |
+          $p = Get-Content package.json -Raw | ConvertFrom-Json
+          "productName=$($p.build.productName) executableName=$($p.build.executableName) perMachine=$($p.build.nsis.perMachine) oneClick=$($p.build.nsis.oneClick) shortcutName=$($p.build.nsis.shortcutName)"
+          Get-Content dist\builder-effective-config.yaml -ErrorAction SilentlyContinue | Select-String -Pattern "productName|executableName|perMachine|oneClick|shortcutName|menuCategory"
       - name: Silent install smoke test
         shell: pwsh
         run: |
-          Start-Process dist\FIDEX-SI-Setup.exe -ArgumentList "/S" -Wait
-          $d = "$env:LOCALAPPDATA\Programs\FIDEX SI"
-          if (!(Test-Path "$d\FIDEXSI.exe")) { throw "not installed" }
-          if (!(Test-Path "$env:USERPROFILE\Desktop\FIDEX SI.lnk")) { throw "no desktop shortcut" }
-          if (!(Test-Path "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\FIDEX SI.lnk")) { throw "no start menu shortcut" }
-          if (!(Test-Path "$d\Uninstall FIDEX SI.exe")) { throw "no uninstaller" }
+          $ErrorActionPreference = "Stop"
+          $inst = (Resolve-Path dist\FIDEX-SI-Setup.exe).Path
+          $dir  = Join-Path $env:LOCALAPPDATA "Programs\FIDEX SI"
+          $log  = Join-Path $env:RUNNER_TEMP "fidex-install"
+          New-Item -ItemType Directory -Force $log | Out-Null
+          function Dump-Diag {
+            Write-Host "---- DIAGNOSTICS ----"
+            Get-ChildItem "$env:LOCALAPPDATA\Programs" -ErrorAction SilentlyContinue | ForEach-Object { Write-Host "Programs\$($_.Name)" }
+            Get-ChildItem $env:LOCALAPPDATA, $env:ProgramFiles, ${env:ProgramFiles(x86)} -Recurse -Filter FIDEXSI.exe -Depth 3 -ErrorAction SilentlyContinue | ForEach-Object { Write-Host "FOUND $($_.FullName)" }
+            foreach ($h in "HKCU","HKLM") { Get-ChildItem "${h}:\Software\Microsoft\Windows\CurrentVersion\Uninstall" -ErrorAction SilentlyContinue | ForEach-Object { $d = Get-ItemProperty $_.PSPath; if ($d.DisplayName -like "*FIDEX*") { Write-Host "UNINSTALL KEY $h $($d.DisplayName) loc=$($d.InstallLocation) cmd=$($d.UninstallString)" } } }
+            Get-ChildItem $env:TEMP, $env:RUNNER_TEMP -Recurse -Include *.log -ErrorAction SilentlyContinue | Where-Object { $_.Name -match "fidex|nsis|install" } | ForEach-Object { Write-Host "== $($_.FullName)"; Get-Content $_.FullName -Tail 40 }
+          }
+          # /S = silent, /D= sets the install dir (must be last, unquoted). Same dir the app uses by default for per-user installs.
+          $p = Start-Process -FilePath $inst -ArgumentList "/S", "/D=$dir" -PassThru -Wait
+          Write-Host "installer exit code: $($p.ExitCode)"
+          if ($p.ExitCode -ne 0) { Dump-Diag; throw "installer exited with $($p.ExitCode)" }
+          # NSIS may hand off to a child process: wait until the files really appear (max 3 min)
+          $exe = Join-Path $dir "FIDEXSI.exe"
+          $unin = Join-Path $dir "Uninstall FIDEX SI.exe"
+          $t = 0; while ((-not ((Test-Path $exe) -and (Test-Path $unin))) -and $t -lt 180) { Start-Sleep 3; $t += 3 }
+          if (!(Test-Path $exe)) { Dump-Diag; throw "not installed: $exe missing" }
+          if (!(Test-Path $unin)) { Dump-Diag; throw "no uninstaller: $unin" }
+          foreach ($r in "python\python.exe","ollama\ollama.exe","backend\app\main.py") { if (!(Test-Path (Join-Path $dir "resources\$r"))) { Dump-Diag; throw "installed app missing resources\$r" } }
+          $desk = @([Environment]::GetFolderPath("Desktop"), [Environment]::GetFolderPath("CommonDesktopDirectory")) | ForEach-Object { Join-Path $_ "FIDEX SI.lnk" }
+          $menu = @([Environment]::GetFolderPath("Programs"), [Environment]::GetFolderPath("CommonPrograms")) | ForEach-Object { Join-Path $_ "FIDEX SI.lnk" }
+          $d = $desk | Where-Object { Test-Path $_ } | Select-Object -First 1
+          $m = $menu | Where-Object { Test-Path $_ } | Select-Object -First 1
+          if (!$d) { Dump-Diag; throw "no desktop shortcut in: $($desk -join '; ')" }
+          if (!$m) { Dump-Diag; throw "no start menu shortcut in: $($menu -join '; ')" }
+          $sh = New-Object -ComObject WScript.Shell
+          foreach ($l in $d, $m) { $tg = $sh.CreateShortcut($l).TargetPath; Write-Host "$l -> $tg"; if ($tg -ne $exe) { throw "shortcut $l targets '$tg', expected '$exe'" } }
+          Write-Host "INSTALL OK: exe, uninstaller, desktop + start menu shortcuts verified"
+          # Launch via the Desktop shortcut target and confirm the app stays running
+          Get-Process FIDEXSI -ErrorAction SilentlyContinue | Stop-Process -Force
+          $app = Start-Process $exe -PassThru
+          Start-Sleep 25
+          $alive = Get-Process FIDEXSI -ErrorAction SilentlyContinue
+          foreach ($ld in "$env:APPDATA\fidex-ai\logs", "$env:APPDATA\FIDEX SI\logs") { Get-ChildItem $ld -ErrorAction SilentlyContinue | ForEach-Object { Write-Host "== $($_.FullName)"; Get-Content $_.FullName -Tail 30 } }
+          if (!$alive) { throw "FIDEXSI.exe exited within 25s of launch" }
+          Write-Host "LAUNCH OK: FIDEXSI.exe running ($(@($alive).Count) processes)"
+          $alive | Stop-Process -Force
+          # Uninstall check
+          $u = Start-Process $unin -ArgumentList "/S" -PassThru -Wait
+          Write-Host "uninstaller exit code: $($u.ExitCode)"
+          Start-Sleep 10
       - uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.event.inputs.tag || github.ref_name }}
