@@ -1,0 +1,8 @@
+1. Close FIDEX.
+2. Copy these 3 files over the same paths in your project (overwrite):
+   src/main/chat-direct.js
+   src/main/main.js
+   src/renderer/renderer.js
+3. Start FIDEX. Wait ~10-20 s after launch (model loads in the background), then ask.
+4. Verify: python-bridge.log should show "chat warm-up attempt 1: ok after N ms" at startup,
+   and the first question's line "chat <id> {...}" should show ollama.load_ms near 0.

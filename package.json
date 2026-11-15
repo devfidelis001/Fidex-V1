@@ -1,0 +1,88 @@
+{
+    "name":  "fidex-ai",
+    "version":  "1.0.0",
+    "description":  "FIDEX AI - personal AI agent (Windows desktop application)",
+    "main":  "src/main/main.js",
+    "private":  true,
+    "scripts":  {
+                    "start":  "electron .",
+                    "verify":  "node scripts/verify-env.js",
+                    "test":  "npm run test:python \u0026\u0026 npm run test:node",
+                    "test:python":  "node tests/run-python-tests.js",
+                    "test:node":  "node tests/run-node-tests.js",
+                    "test:e2e":  "electron tests/e2e/electron-e2e.js",
+                    "test:renderer":  "node tests/e2e/renderer-to-python.js"
+                },
+    "author":  "FIDELIS",
+    "license":  "UNLICENSED",
+    "devDependencies":  {
+                            "electron":  "^45.2.1",
+                            "electron-builder":  "^26.18.0"
+                        },
+    "build":  {
+                  "appId":  "com.fidelis.fidexai",
+                  "productName":  "FIDEX SI",
+                  "win":  {
+                              "icon":  "assets/icons/icon.ico",
+                              "target":  [
+                                             "nsis"
+                                         ]
+                          },
+                  "files":  [
+                                "src/**/*",
+                                "assets/**/*",
+                                "package.json",
+                                "!assets/whisper/**",
+                                "!**/*.backup",
+                                "!**/*-backup"
+                            ],
+                  "extraResources":  [
+                                         {
+                                             "filter":  [
+                                                            "**/*",
+                                                            "!tests/**",
+                                                            "!**/__pycache__/**",
+                                                            "!**/*.db",
+                                                            "!**/*backup*",
+                                                            "!.venv/**"
+                                                        ],
+                                             "from":  "backend",
+                                             "to":  "backend"
+                                         },
+                                         {
+                                             "to":  "assets/whisper",
+                                             "from":  "assets/whisper"
+                                         },
+                                         {
+                                             "to":  "assets/tts",
+                                             "from":  "assets/tts"
+                                         },
+                                         {
+                                             "to":  "python",
+                                             "from":  "build-res/python"
+                                         },
+                                         {
+                                             "to":  "ollama",
+                                             "from":  "build-res/ollama"
+                                         }
+                                     ],
+                  "executableName":  "FIDEXSI",
+                  "nsis":  {
+                               "oneClick":  false,
+                               "perMachine":  false,
+                               "allowElevation":  true,
+                               "allowToChangeInstallationDirectory":  true,
+                               "createDesktopShortcut":  "always",
+                               "createStartMenuShortcut":  true,
+                               "shortcutName":  "FIDEX SI",
+                               "menuCategory":  false,
+                               "installerIcon":  "assets/icons/icon.ico",
+                               "uninstallerIcon":  "assets/icons/icon.ico",
+                               "installerHeaderIcon":  "assets/icons/icon.ico",
+                               "uninstallDisplayName":  "FIDEX SI",
+                               "runAfterFinish":  true,
+                               "deleteAppDataOnUninstall":  false,
+                               "artifactName":  "FIDEX-SI-Setup-V1.exe"
+                           }
+              }
+}

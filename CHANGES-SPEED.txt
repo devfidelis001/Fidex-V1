@@ -1,0 +1,7 @@
+Extract over your project (same folder layout). Only changed/new files are included. Then run BUILD_KIT\build-installer.ps1.
+ollama-engine.js : async model import (no main-thread freeze), finds FIDEX-SI-Model*.zip in Downloads/OneDrive/Desktop/Documents/app folder, handles ZIPs with a wrapper folder,
+                   keeps scanning if the ZIP arrives later, 40 ms readiness polling, per-message zero-HTTP fast path, OLLAMA_NOPRUNE/NOHISTORY, above-normal priority
+chat-direct.js   : token flush 16 ms (was 40), SpeedX caps answers at 120 tokens (never for code)
+renderer.js      : SpeedX status updates live while the model is being installed
+responder.js     : accurate model-install message
+tools/bench-brain.js : real TTFT/total/tok-s benchmark on your PC

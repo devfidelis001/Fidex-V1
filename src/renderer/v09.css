@@ -1,0 +1,33 @@
+/* v0.9.0 pages: Give Me Your Details, About link. Uses the existing tokens only. */
+
+.pf-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 12px; margin-bottom: 4px; }
+.pf-field { min-width: 0; }
+.pf-wide { grid-column: 1 / -1; }
+.pf-gap { margin-top: 16px; }
+.pf-input {
+  width: 100%;
+  margin: 0 0 10px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  font: inherit;
+  font-size: 13px;
+  color: var(--text);
+  resize: none;
+  user-select: text;
+}
+.pf-grid .pf-input { margin-bottom: 0; }
+.pf-input:focus { border-color: var(--black); }
+.pf-input::placeholder { color: var(--faint); }
+#profile-clear { height: 28px; padding: 0 11px; font-size: 12px; }
+#profile-state { white-space: normal; }
+
+.about-blurb { max-width: 400px; margin: 4px 0 0; font-size: 12.5px; line-height: 1.55; color: var(--text-2); }
+.ext-link { color: var(--text); text-decoration: underline; text-decoration-color: var(--line-strong); text-underline-offset: 3px; cursor: pointer; }
+.ext-link:hover { text-decoration-color: var(--black); }
+
+@media (max-width: 620px) {
+  .pf-grid { grid-template-columns: minmax(0, 1fr); }
+  #profile-state { display: none; }
+}

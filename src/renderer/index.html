@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FIDEX SI</title>
+  <link rel="icon" type="image/svg+xml" href="assets/fidex-icon.svg" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="workspace.css" />
+  <link rel="stylesheet" href="views.css" />
+    <link rel="stylesheet" href="welcome.css" />
+  <link rel="stylesheet" href="v09.css" />
+  <link rel="stylesheet" href="first-run.css" />
+  <link rel="stylesheet" href="speedx.css" />
+</head>
+<body>
+
+  <!-- Icon sprite: every icon in the interface is defined here once and reused with <use>. -->
+  <svg class="sprite" width="0" height="0" aria-hidden="true" focusable="false">
+    <defs>
+      <symbol id="logo-kite" viewBox="0 0 100 122">
+        <polygon points="50,0 0,61 50,61" fill="#ffffff" />
+        <polygon points="50,0 100,61 50,61" fill="#bdbdbd" />
+        <polygon points="0,61 50,61 50,122" fill="#bdbdbd" />
+        <polygon points="100,61 50,61 50,122" fill="#ffffff" />
+      </symbol>
+    </defs>
+    <defs>
+      <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" /></symbol>
+      <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z" /></symbol>
+      <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M9.6 9.6a2.5 2.5 0 1 1 3.6 2.2c-.8.4-1.2.9-1.2 1.8" /><path d="M12 17h.01" /></symbol>
+      <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></symbol>
+      <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M12 11v5M12 8h.01" /></symbol>
+      <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3" /><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21" /></symbol>
+      <symbol id="i-stop" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor" stroke="none" /></symbol>
+      <symbol id="i-send" viewBox="0 0 24 24"><path d="M21 3 10.5 13.5M21 3l-6.5 18-4-7.5L3 9.5z" /></symbol>
+      <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6" /></symbol>
+      <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18" /></symbol>
+      <symbol id="i-minimize" viewBox="0 0 24 24"><path d="M6 12h12" /></symbol>
+      <symbol id="i-maximize" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="1" /></symbol>
+      <symbol id="i-restore" viewBox="0 0 24 24"><rect x="8.5" y="5.5" width="10" height="10" rx="1" /><path d="M5.5 9v9.5H15" /></symbol>
+      <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" /></symbol>
+      <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13" /></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7" /></symbol>
+      <symbol id="i-stop" viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="1.5" /></symbol>
+      <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6" /><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5" /></symbol>
+    </defs>
+  </svg>
+
+  <!-- Title bar: always visible (window drag area + window controls). -->
+  <header id="titlebar" class="titlebar">
+    <button id="menu-btn" class="tb-btn tb-menu" type="button" aria-label="Open menu"><svg class="ic"><use href="#i-menu" /></svg></button>
+    <div class="tb-drag" aria-hidden="true">
+      <span class="tb-brand"><svg class="tb-kite"><use href="#logo-kite" /></svg>FIDEX SI</span>
+    </div>
+    <div class="tb-controls">
+      <button id="win-min" class="tb-btn" type="button" aria-label="Minimise" title="Minimise"><svg class="ic"><use href="#i-minimize" /></svg></button>
+      <button id="win-max" class="tb-btn tb-max" type="button" aria-label="Maximise" title="Maximise"><svg class="ic"><use id="win-max-use" href="#i-maximize" /></svg></button>
+      <button id="win-close" class="tb-btn tb-close" type="button" aria-label="Close" title="Close"><svg class="ic"><use href="#i-close" /></svg></button>
+    </div>
+  </header>
+
+  <div id="stage" class="stage">
+
+    <!-- Welcome screen: FIDEX SI name plus a bottom line and a credit. Styled only by welcome.css. -->
+    <div id="welcome-view" class="welcome-view">
+      <div class="welcome-center">
+        <h1 class="brand"><span class="brand-main">FIDEX</span> <span class="brand-sub" aria-label="SI"><span class="ltr-slot" aria-hidden="true"><span class="ltr-a">A</span><span class="ltr-s">S</span></span>I</span></h1>
+      </div>
+      <p class="welcome">Take a rest, CEO. Let's FIDEX SI take over.</p>
+      <p class="credit">Built by the FIDEX Team</p>
+    </div>
+
+
+    <!-- First launch: typewriter introduction + onboarding. Styled by first-run.css. -->
+    <div id="fr-view" class="fr-layer" hidden>
+      <div class="fr-scroll">
+        <div class="fr-stage">
+          <p id="fr-type" class="fr-type" aria-live="polite"></p>
+          <form id="onboard-form" class="fr-form" autocomplete="off" hidden>
+            <label class="fr-label" for="ob-name">Name</label>
+            <input id="ob-name" class="fr-input" type="text" maxlength="200" placeholder="What should I call you?" />
+            <label class="fr-label" for="ob-project">Current project</label>
+            <input id="ob-project" class="fr-input" type="text" maxlength="500" placeholder="What are you working on right now?" />
+            <label class="fr-label" for="ob-role">Occupation / profession</label>
+            <input id="ob-role" class="fr-input" type="text" maxlength="200" placeholder="e.g. Founder, student, designer" />
+            <div class="fr-actions">
+              <button id="ob-continue" class="fr-btn fr-primary" type="submit">Continue</button>
+              <button id="ob-skip-form" class="fr-btn fr-ghost" type="button">Skip</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <button id="fr-skip" class="fr-skip" type="button">Skip</button>
+    </div>
+
+    <!-- Main application -->
+    <div id="workspace-view" class="workspace" hidden>
+
+      <aside id="sidebar" class="sidebar" aria-label="Main navigation">
+        <div class="brandbar">
+          <div class="logo-tile"><svg class="logo"><use href="#logo-kite" /></svg></div>
+          <div class="brand-text">
+            <span class="brand-name"><b>FIDEX</b> SI</span>
+            <span class="brand-tag">Think &bull; Plan &bull; Execute</span>
+          </div>
+          <button id="sidebar-close" class="icon-btn sidebar-close" type="button" aria-label="Close menu"><svg class="ic"><use href="#i-close" /></svg></button>
+        </div>
+
+        <button id="new-chat" class="nav-item nav-new" type="button" data-route="chat-new"><svg class="ic"><use href="#i-plus" /></svg><span>New chat</span></button>
+
+        <nav class="nav" aria-label="Features">
+          <button class="nav-item nav-primary" type="button" data-route="chat"><svg class="ic"><use href="#i-chat" /></svg><span>Chat</span></button>
+          <button class="nav-item" type="button" data-route="profile"><svg class="ic"><use href="#i-user" /></svg><span>Give Me Your Details</span></button>
+          <button class="nav-item" type="button" data-route="howto"><svg class="ic"><use href="#i-help" /></svg><span>How to Use</span></button>
+        </nav>
+
+        <section class="recent-chats" aria-label="Recent chats">
+          <h4 class="label">Recent chats</h4>
+          <ul id="recent-chats" class="nav recent-list"></ul>
+          <p id="recent-chats-empty" class="muted small recent-empty">No chats yet.</p>
+        </section>
+
+        <nav class="nav nav-bottom" aria-label="Library and settings">
+          <button class="nav-item" type="button" data-route="history"><svg class="ic"><use href="#i-clock" /></svg><span>History</span><svg class="ic ic-sm nav-chev"><use href="#i-chevron" /></svg></button>
+          <button class="nav-item" type="button" data-route="about"><svg class="ic"><use href="#i-info" /></svg><span>About</span></button>
+        </nav>
+
+        <p class="side-foot">A smarter tomorrow, together.</p>
+      </aside>
+
+      <div id="sidebar-backdrop" class="backdrop" hidden></div>
+
+      <main class="main" id="main">
+
+
+        <!-- Chat -->
+        <section id="view-chat" class="view view-chat" data-view="chat" hidden>
+          <header class="page-head">
+            <h2 id="chat-title" class="page-title">New chat</h2>
+            <button id="speedx-btn" class="speedx-btn" type="button" hidden aria-label="Improve speedX" title="Improve speedX"><span class="sx-word">speed</span><span class="sx-x">X</span></button>
+          </header>
+          <div id="brain-bar" class="brain-bar" role="progressbar" aria-label="SpeedX" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <div class="bb-battery">
+              <div class="bb-cap"></div>
+              <div class="bb-body">
+                <div id="brain-bar-fill" class="bb-fill"></div>
+                <svg class="bb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="M12 6.5C12 4.8 10.6 4 9.4 4.2 8 4.4 7.2 5.6 7.4 6.8 5.9 7.1 5 8.3 5.3 9.7 4.3 10.4 4.1 11.9 5 12.9 4.6 14.1 5.3 15.4 6.5 15.7 6.5 17 7.6 18 8.9 17.9 9.5 18.9 10.8 19.3 11.7 18.6"/><path d="M12 6.5c0-1.7 1.4-2.5 2.6-2.3 1.4.2 2.2 1.4 2 2.6 1.5.3 2.4 1.5 2.1 2.9 1 .7 1.2 2.2.3 3.2.4 1.2-.3 2.5-1.5 2.8 0 1.3-1.1 2.3-2.4 2.2-.6 1-1.9 1.4-2.8.7"/></svg>
+              </div>
+            </div>
+            <div class="bb-text"><span id="brain-bar-label">SpeedX: increases response speed</span><span id="brain-bar-pct">0%</span></div>
+          </div>
+          <div id="messages" class="messages" role="log" aria-live="polite">
+            <div id="empty-state" class="empty-state">
+              <div class="logo-tile logo-tile-md"><svg class="logo"><use href="#logo-kite" /></svg></div>
+              <p>Type a message below to start a conversation.</p>
+              <p class="muted">You can send a message even while the brain is still loading.</p>
+            </div>
+          </div>
+          <div id="attach-preview" class="attach-preview" hidden>
+            <img alt="Selected image preview" /><span class="attach-name"></span>
+            <button type="button" aria-label="Remove image" title="Remove image">&times;</button>
+          </div>
+          <p id="attach-error" class="attach-error" role="alert" hidden></p>
+          <form id="composer" class="composer" autocomplete="off">
+            <input id="chat-file" type="file" accept="image/png,image/jpeg,image/webp,.png,.jpg,.jpeg,.webp" hidden />
+            <button id="chat-attach" class="round-btn" type="button" aria-label="Upload image" title="Upload image (PNG, JPG, WEBP)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-8 9"/></svg></button>
+            <button id="chat-imagegen" class="round-btn" type="button" aria-label="Image Creator" aria-pressed="false" title="Image Creator: generate an image from your prompt"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".6"/><circle cx="17.5" cy="10.5" r=".6"/><circle cx="8.5" cy="7.5" r=".6"/><circle cx="6.5" cy="12.5" r=".6"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.93 0 1.65-.75 1.65-1.69 0-.44-.18-.84-.44-1.13-.29-.29-.44-.65-.44-1.12a1.64 1.64 0 0 1 1.67-1.67h2c3.05 0 5.55-2.5 5.55-5.55C21.97 6.01 17.46 2 12 2z"/></svg></button>
+            <textarea id="input" dir="ltr" rows="1" placeholder="Message FIDEX SI..." aria-label="Message"></textarea>
+            <button id="chat-mic" class="round-btn" type="button" aria-label="Start voice input" title="Voice input (offline)"><svg class="ic"><use href="#i-mic" /></svg></button>
+            <button id="send" class="round-btn round-btn-dark" type="submit" aria-label="Send" disabled><svg class="ic"><use href="#i-send" /></svg></button>
+          </form>
+          <p class="composer-note">Enter to send &middot; Shift+Enter for a new line &middot; Placeholder mode: replies are not from a real SI.</p>
+        </section>
+
+
+
+        <!-- How to Use -->
+        <section id="view-howto" class="view" data-view="howto" hidden>
+          <div class="view-scroll">
+            <div class="page-inner">
+              <div class="page-head page-head-stack">
+                <div class="eyebrow"><svg class="ic ic-sm"><use href="#i-help" /></svg>How to Use</div>
+                <h2 class="page-title">How FIDEX SI works</h2>
+                <p class="page-sub">A short guide to what each part of the application is for.</p>
+              </div>
+
+              <div class="guide-grid">
+                <article class="guide-card">
+                  <div class="guide-ic"><svg class="ic"><use href="#i-plus" /></svg></div>
+                  <h3>New Chat</h3>
+                  <p>Press <b>New chat</b> at the top of the left menu to start a fresh conversation. Type your message and press Enter (Shift+Enter adds a new line). Use the microphone to speak, or the attach button to add an image. Old conversations stay in History, where you can open or delete them, or clear them all.</p>
+                </article>
+                <article class="guide-card">
+                  <div class="guide-ic"><svg class="ic"><use href="#i-user" /></svg></div>
+                  <h3>Give Me Your Details</h3>
+                  <p>Open <b>Give Me Your Details</b> and fill in only what you want FIDEX SI to know: your name, current project and occupation. Press Save. FIDEX SI uses these details to answer you personally. Press <b>Remove my details</b> to delete them, including FIDEX SI's copy.</p>
+                </article>
+                <article class="guide-card">
+                  <div class="guide-ic"><svg class="ic"><use href="#i-info" /></svg></div>
+                  <h3>About</h3>
+                  <p>Open <b>About</b> to see the version (Version 1), the release date and who built FIDEX: the FIDEX Team. Use the <b>Restart FIDEX</b> button there to restart the application safely.</p>
+                </article>
+              </div>
+
+              <div class="actions-row">
+                <button class="btn btn-outline" type="button" data-route="chat">Back to chat</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- Give Me Your Details -->
+        <section id="view-profile" class="view" data-view="profile" hidden>
+          <div class="view-scroll">
+            <div class="page-inner">
+              <div class="page-head page-head-stack">
+                <div class="eyebrow"><svg class="ic ic-sm"><use href="#i-user" /></svg>Give Me Your Details</div>
+                <h2 class="page-title">Tell FIDEX SI about you</h2>
+                <p class="page-sub">Share only what you want. Your details are saved on this device and added to FIDEX SI's memory, so answers can fit who you are and what you do.</p>
+              </div>
+              <form id="profile-form" class="panel pf-panel" autocomplete="off">
+                <div id="profile-personal" class="pf-grid"></div>
+                <div class="to-bar">
+                  <span id="profile-state" class="to-hint"></span>
+                  <button id="profile-clear" class="btn btn-outline" type="button">Remove my details</button>
+                  <button class="btn btn-dark" type="submit"><svg class="ic ic-sm"><use href="#i-check" /></svg>Save</button>
+                </div>
+              </form>
+              </div>
+          </div>
+        </section>
+
+
+        <!-- History -->
+        <section id="view-history" class="view" data-view="history" hidden>
+          <div class="view-scroll">
+            <div class="page-inner">
+              <div class="page-head page-head-stack">
+                <div class="eyebrow"><svg class="ic ic-sm"><use href="#i-clock" /></svg>History</div>
+                <h2 class="page-title">History</h2>
+              </div>
+              <div class="actions-row actions-left"><button id="history-clear-all" class="btn btn-outline" type="button">Delete all history</button>
+                <button id="history-start-over" class="btn btn-outline" type="button">Start FIDEX from the beginning</button></div>
+              <ul id="history-chats" class="list"></ul>
+              <p id="history-empty" class="empty-line">Nothing here yet.</p>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- About -->
+        <section id="view-about" class="view" data-view="about" hidden>
+          <div class="view-scroll">
+            <div class="page-inner page-inner-narrow">
+              <div class="about-hero">
+                <div class="logo-tile logo-tile-lg"><svg class="logo"><use href="#logo-kite" /></svg></div>
+                <h2 class="page-title">FIDEX SI</h2>
+                <p class="page-sub">Personal SI &middot; Think &bull; Plan &bull; Execute</p>
+                <p class="about-blurb">FIDEX SI is a private assistant that runs on your own computer. Chat with it by text or voice, show it images, and let it remember the details you share.</p>
+              </div>
+              <dl class="kv">
+                <dt>Version</dt><dd id="about-version">-</dd>
+                <dt>Electron</dt><dd id="about-electron">-</dd>
+                <dt>Chromium</dt><dd id="about-chrome">-</dd>
+                <dt>Released</dt><dd>November 14, 2026, 4:40 AM</dd>
+                <dt>Built by</dt><dd>The FIDEX Team</dd>
+                <dt>Memory</dt><dd>Your saved details are used when answering</dd>
+              </dl>
+              <div class="actions-row"><button id="about-restart" class="btn btn-dark" type="button">Restart FIDEX</button></div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  </div>
+
+  <script type="module" src="renderer.js"></script>
+</body>
+</html>

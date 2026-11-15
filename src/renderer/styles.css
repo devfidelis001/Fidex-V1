@@ -1,0 +1,252 @@
+/* FIDEX AI - base, design tokens, title bar and welcome screen.
+   Greyscale only: white, silver, grey and black. */
+
+/* FIDEX AI - base, design tokens and title bar.
+   Dark theme: black and charcoal surfaces, white / silver / grey type.
+   NOTE: --black and --white keep their old names but are INVERTED on purpose:
+   --black is now the light "ink" colour (primary buttons, selected states) and
+   --white is the dark raised surface (panels, inputs). The welcome screen does not use
+   any of these tokens: see welcome.css. */
+
+:root {
+  color-scheme: dark;
+  --white: #111113;          /* raised surface */
+  --bg: #0a0a0b;
+  --bg-soft: #0e0e10;
+  --bg-hover: #161618;
+  --bg-press: #1e1e21;
+  --line: #222226;
+  --line-strong: #303036;
+  --silver: #85858c;
+  --text: #ececee;
+  --text-2: #c2c2c7;
+  --muted: #8b8b92;
+  --faint: #5f5f66;
+  --black: #e8e8ea;          /* light ink */
+  --shadow-sm: none;
+  --shadow-md: none;
+  --radius: 10px;
+  --radius-sm: 7px;
+  --titlebar-h: 32px;
+  --font: "Segoe UI Variable Text", "Segoe UI", Inter, "Helvetica Neue", Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+[hidden] { display: none !important; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 12.5px;
+  line-height: 1.45;
+  user-select: none;
+  cursor: default;
+  -webkit-font-smoothing: antialiased;
+}
+
+button { font: inherit; color: inherit; }
+button, input, textarea { outline: none; }
+:focus-visible { outline: 1.5px solid var(--black); outline-offset: 1px; }
+/* Text fields show focus on their container (border turns black), so no extra outline. */
+input:focus-visible, textarea:focus-visible { outline: none; }
+
+.sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+/* Icons: stroke style is set here because it passes through <use> into the symbol. */
+.ic {
+  width: 16px; height: 16px;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.ic-sm { width: 14px; height: 14px; }
+.ic-lg { width: 22px; height: 22px; stroke-width: 1.4; }
+
+/* ---------- Logo tile: white kite on black ---------- */
+.logo-tile {
+  width: 28px; height: 28px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  background: #000;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+}
+.logo-tile .logo { width: 11px; height: 13px; }
+.logo-tile-md { width: 40px; height: 40px; }
+.logo-tile-md .logo { width: 20px; height: 24px; }
+.logo-tile-lg { width: 52px; height: 52px; }
+.logo-tile-lg .logo { width: 21px; height: 26px; }
+
+/* ---------- Title bar ---------- */
+.titlebar {
+  position: relative;
+  z-index: 40;
+  display: flex;
+  align-items: stretch;
+  height: var(--titlebar-h);
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+}
+.tb-drag {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  padding-left: 12px;
+  -webkit-app-region: drag;
+}
+.tb-brand {
+  display: none; /* the sidebar already carries the brand; shown only on narrow windows */
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: var(--text-2);
+}
+.tb-kite { width: 9px; height: 11px; }
+.tb-controls { display: flex; -webkit-app-region: no-drag; }
+.tb-btn {
+  width: 42px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  color: var(--text-2);
+  cursor: pointer;
+  -webkit-app-region: no-drag;
+}
+.tb-btn .ic { width: 15px; height: 15px; stroke-width: 1.4; }
+.tb-btn:hover { background: var(--bg-hover); }
+.tb-btn:active { background: var(--bg-press); }
+.tb-close:hover { background: #c42b1c; color: #fff; }
+.tb-menu { display: none; }
+.tb-menu { width: 40px; }
+
+/* ---------- Stage ---------- */
+.stage {
+  position: relative;
+  height: calc(100% - var(--titlebar-h));
+  overflow: hidden;
+}
+
+/* ---------- Shared controls ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  height: 32px;
+  padding: 0 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  background: transparent;
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.btn-sm { height: 28px; padding: 0 11px; font-size: 12px; }
+.btn-dark { background: var(--black); color: var(--white); }
+.btn-dark:hover { background: #ffffff; }
+.btn-dark:disabled { background: var(--bg-press); color: var(--faint); cursor: default; }
+.btn-outline { border-color: var(--line-strong); background: var(--white); }
+.btn-outline:hover { background: var(--bg-hover); }
+
+.icon-btn {
+  width: 28px; height: 28px;
+  display: inline-grid;
+  place-items: center;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+.icon-btn:hover { background: var(--bg-hover); color: var(--text); }
+
+.round-btn {
+  width: 32px; height: 32px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-2);
+  cursor: pointer;
+}
+.round-btn:hover { background: var(--bg-hover); }
+.round-btn-dark { background: var(--black); color: var(--white); }
+.round-btn-dark:hover { background: #ffffff; }
+.round-btn-dark:disabled { background: var(--bg-press); color: var(--faint); cursor: default; }
+.round-btn .ic { width: 15px; height: 15px; }
+
+.tag {
+  padding: 1px 7px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  background: var(--bg-soft);
+}
+
+.toast {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  z-index: 60;
+  max-width: calc(100% - 32px);
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: var(--black);
+  color: var(--white);
+  font-size: 12px;
+  box-shadow: var(--shadow-md);
+}
+
+@media (max-width: 760px) {
+  .tb-brand { display: inline-flex; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+
+/* Brain smartness battery (vertical, greyscale) */
+.brain-bar { display: flex; align-items: center; gap: 10px; align-self: flex-end; margin: 8px 20px 8px 0; padding: 6px 10px; border: 1px solid var(--line); border-radius: 12px; background: var(--bg-soft); transition: opacity .6s ease, max-height .6s ease, margin .6s ease, padding .6s ease; max-height: 110px; overflow: hidden; }
+.brain-bar.is-hiding { opacity: 0; max-height: 0; margin: 0; padding-top: 0; padding-bottom: 0; border-width: 0; }
+.bb-battery { display: flex; flex-direction: column; align-items: center; }
+.bb-cap { width: 12px; height: 4px; border-radius: 2px 2px 0 0; background: #cfcfd4; }
+.bb-body { position: relative; width: 28px; height: 52px; border: 2px solid #cfcfd4; border-radius: 6px; background: #050506; overflow: hidden; }
+.bb-fill { position: absolute; left: 0; right: 0; bottom: 0; height: 0; background: linear-gradient(to top, #6b6b72, #ffffff); transition: height .25s linear; }
+.bb-icon { position: absolute; inset: 0; margin: auto; width: 18px; height: 18px; color: #fff; mix-blend-mode: difference; }
+.bb-text { display: flex; flex-direction: column; gap: 2px; font-size: 12px; color: var(--muted); min-width: 120px; }
+.bb-text #brain-bar-pct { color: var(--text); font-weight: 600; font-size: 14px; }
+.brain-bar.is-ready .bb-body { box-shadow: 0 0 8px rgba(255,255,255,.35); }
+.brain-bar.is-failed .bb-fill { background: #55555a; }
+
+/* Listen: tiny controls under the response container */
+.tts-row { display: flex; gap: 2px; margin: -16px 0 0 -4px; line-height: 0; position: relative; z-index: 1; }
+.tts-btn { -webkit-appearance: none !important; appearance: none !important; display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; padding: 0 !important; border: 0 !important; border-radius: 0 !important; background: none !important; box-shadow: none !important; outline: none !important; color: inherit; opacity: .55; cursor: pointer; }
+.tts-btn svg { display: block; }
+.tts-btn:hover, .tts-btn.is-on, .tts-btn:focus { opacity: 1; background: none !important; box-shadow: none !important; }
+::highlight(reading-word) { background-color: #fff; color: #000; }
+
+/* Live voice chat */
+.fx-live-input { color: transparent !important; caret-color: transparent !important; }
+.fx-live-input::placeholder { color: transparent !important; }
+.fx-hide-text .ai-resp-text { display: none; }
+.fx-hide-text .ai-resp .ai-sec::after { content: " · voice only"; opacity: .5; }
+#live-chat.is-on { background: #fff !important; color: #000 !important; }
+.fx-live #chat-mic, .fx-live #chat-mic * { animation: none !important; }

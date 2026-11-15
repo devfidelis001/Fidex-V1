@@ -1,0 +1,5 @@
+QWEN 3 THINK CONTROL
+Model: qwen3:4b
+Ollama API option: think=false
+Apply think=false to every Normal Chat request.
+Preserve streaming and existing features.

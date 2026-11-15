@@ -1,0 +1,56 @@
+/* FIDEX AI first-launch landing: premium black, glowing typewriter text, onboarding form. */
+.fr-layer[hidden] { display: none !important; }
+.fr-layer {
+  position: fixed; inset: 0; z-index: 9999; background: #000; color: #fff;
+  font-family: "Segoe UI Variable Display", "Segoe UI", Inter, "Helvetica Neue", Arial, sans-serif;
+  background: linear-gradient(90deg, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.55) 55%, rgba(0,0,0,0.25) 100%), url("assets/fidex-arm.jpg") center right / cover no-repeat, #000;
+}
+.fr-layer.fade-out { opacity: 0; transition: opacity 0.45s ease; }
+.fr-scroll { position: absolute; inset: 0; overflow-y: auto; display: flex; }
+.fr-stage { margin: auto; width: 100%; max-width: 620px; padding: 56px 24px 72px; }
+
+.fr-type { margin: 0 0 32px; min-height: 9.5em; }
+.fr-line {
+  display: block; margin-bottom: 1em; font-family: "Cascadia Mono", "Cascadia Code", Consolas, "SF Mono", Menlo, monospace;
+  font-size: clamp(12px, 1.7vw, 15px); font-weight: 300; line-height: 1.8; letter-spacing: 0.14em; text-transform: uppercase;
+  color: rgba(235, 235, 235, 0.92); padding-left: 14px; border-left: 1px solid rgba(255, 255, 255, 0.35);
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.18);
+}
+.fr-line:first-child { font-size: clamp(15px, 2.4vw, 22px); letter-spacing: 0.3em; font-weight: 400; color: #fff; }
+.fr-line:last-child:not(:empty)::after {
+  content: ""; display: inline-block; width: 0.55em; height: 1em; margin-left: 6px; vertical-align: -0.15em;
+  background: #fff; animation: fr-blink 1s steps(1) infinite;
+}
+@keyframes fr-blink { 50% { opacity: 0; } }
+
+.fr-form { opacity: 0; transform: translateY(12px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.fr-form.show { opacity: 1; transform: none; }
+.fr-label { display: block; margin: 16px 0 6px; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255, 255, 255, 0.55); padding: 0; }
+.fr-input {
+  width: 100%; box-sizing: border-box; padding: 12px 14px; font: inherit; font-size: 15px; color: #fff;
+  background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 10px;
+  resize: vertical; transition: border-color 0.2s, box-shadow 0.2s;
+}
+.fr-input::placeholder { color: rgba(255, 255, 255, 0.28); }
+.fr-input:focus { outline: none; border-color: rgba(255, 255, 255, 0.55); box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.08); }
+.fr-fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+.fr-hint { margin: 0 0 10px; font-size: 14px; color: rgba(255, 255, 255, 0.7); }
+.fr-choices { display: flex; gap: 10px; }
+.fr-choice { flex: 1; cursor: pointer; }
+.fr-choice input { position: absolute; opacity: 0; pointer-events: none; }
+.fr-choice span {
+  display: block; text-align: center; padding: 11px 0; border-radius: 10px; font-size: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.12); background: rgba(255, 255, 255, 0.04); transition: all 0.2s;
+}
+.fr-choice input:checked + span { border-color: rgba(255, 255, 255, 0.8); background: rgba(255, 255, 255, 0.08); box-shadow: 0 0 16px rgba(255, 255, 255, 0.12); }
+.fr-choice input:focus-visible + span { box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2); }
+.fr-actions { display: flex; gap: 12px; margin-top: 26px; }
+.fr-btn { font: inherit; font-size: 15px; padding: 12px 26px; border-radius: 10px; cursor: pointer; border: 1px solid transparent; }
+.fr-primary { background: #fff; color: #000; font-weight: 600; box-shadow: 0 0 20px rgba(255, 255, 255, 0.15); }
+.fr-primary:hover { background: #e6e6e6; }
+.fr-ghost { background: none; color: rgba(255, 255, 255, 0.7); border-color: rgba(255, 255, 255, 0.18); }
+.fr-ghost:hover { color: #fff; border-color: rgba(255, 255, 255, 0.4); }
+.fr-skip { position: absolute; top: 14px; right: 18px; background: none; border: 0; color: rgba(255, 255, 255, 0.4); font: inherit; font-size: 13px; letter-spacing: 0.06em; cursor: pointer; padding: 6px 8px; }
+.fr-skip:hover, .fr-skip:focus-visible { color: #fff; outline: none; }
+@media (max-width: 520px) { .fr-actions { flex-direction: column; } .fr-btn { width: 100%; } }
+@media (prefers-reduced-motion: reduce) { .fr-line::after { animation: none !important; } .fr-form { transition: none; } }
