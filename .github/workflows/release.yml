@@ -2,6 +2,8 @@ name: Build FIDEX SI installer
 on:
   push: { tags: ["v*"] }
   workflow_dispatch:
+    inputs:
+      tag: { description: 'Release tag to publish, e.g. v1.0.0', required: true }
 permissions: { contents: write }
 jobs:
   build:
@@ -29,8 +31,9 @@ jobs:
           if (!(Test-Path "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\FIDEX SI.lnk")) { throw "no start menu shortcut" }
           if (!(Test-Path "$d\Uninstall FIDEX SI.exe")) { throw "no uninstaller" }
       - uses: softprops/action-gh-release@v2
-        if: startsWith(github.ref, 'refs/tags/')
         with:
+          tag_name: ${{ github.event.inputs.tag || github.ref_name }}
+          make_latest: true
           files: |
             dist/FIDEX-SI-Setup.exe
             dist/FIDEX-SI-Model-qwen3.5-4b.zip

@@ -6,8 +6,3 @@ models/
 __pycache__/
 *.pyc
 backend/.venv/
-assets/whisper/*.bin
-assets/tts/*.onnx
-FIDEX-SI-Website.zip
-backend/.env
-backend/.env

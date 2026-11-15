@@ -1,3 +1,10 @@
+# FIDEX SI
+
+**Install:** go to the repo's **Releases** page and download `FIDEX-SI-Setup.exe` (NOT "Source code (zip)"). Run it; it creates Desktop and Start Menu shortcuts. No Node.js, npm or Python needed.
+Also download `FIDEX-SI-Model-qwen3.5-4b.zip` from the same release and leave it in Downloads; FIDEX SI imports it on first run.
+
+---
+
 # FIDEX AI
 
 Personal AI agent, built as a **Windows desktop application** (not a website).
