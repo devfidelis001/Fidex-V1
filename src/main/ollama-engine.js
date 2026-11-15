@@ -48,11 +48,38 @@ function resolveModelsDir(given) {
   fs.mkdirSync(d, { recursive: true }); return d;
 }
 const manifestOf = (dir, tag) => fs.existsSync(path.join(dir, "manifests", "registry.ollama.ai", "library", "qwen3.5", tag));
+// Split model packs (GitHub's 2 GB file limit): FIDEX-SI-Model-*.zip.001, .002, ... in the same folder. Joined into one zip automatically.
+function assembleParts(dirs) {
+  const out = [];
+  for (const d of dirs) {
+    let names = []; try { names = fs.readdirSync(d); } catch (_) { continue; }
+    const groups = {};
+    for (const f of names) { const m = /^(FIDEX-SI-Model-.*\.zip)\.(\d{3})$/i.exec(f); if (m) (groups[m[1]] = groups[m[1]] || []).push([parseInt(m[2], 10), f]); }
+    for (const [base, list] of Object.entries(groups)) {
+      list.sort((a, b) => a[0] - b[0]);
+      if (!list.every((p, i) => p[0] === i + 1)) { L("error", `model parts for ${base} in ${d} are not consecutive from .001 (found ${list.map((p) => p[0]).join(",")}); download every part`); continue; }
+      const dest = path.join(userData || os.tmpdir(), "model-pack", base);
+      try {
+        fs.mkdirSync(path.dirname(dest), { recursive: true });
+        const total = list.reduce((n, p) => n + fs.statSync(path.join(d, p[1])).size, 0);
+        if (!(fs.existsSync(dest) && fs.statSync(dest).size === total)) {
+          L("info", `joining ${list.length} model parts from ${d}`);
+          const fd = fs.openSync(dest, "w"), buf = Buffer.allocUnsafe(8 << 20);
+          for (const p of list) { const rd = fs.openSync(path.join(d, p[1]), "r"); let n; while ((n = fs.readSync(rd, buf, 0, buf.length, null)) > 0) fs.writeSync(fd, buf, 0, n); fs.closeSync(rd); }
+          fs.closeSync(fd);
+        }
+        out.push(dest);
+      } catch (e) { L("error", "joining model parts failed: " + e.message); }
+    }
+  }
+  return out;
+}
 function packCandidates() {
   const dirs = [process.env.FIDEX_MODEL_PACK_DIR, process.resourcesPath, userData && path.join(userData, "model-pack"), path.dirname(process.execPath),
     process.env.USERPROFILE && path.join(process.env.USERPROFILE, "Downloads"), process.env.USERPROFILE && path.join(process.env.USERPROFILE, "Desktop")].filter(Boolean);
   const out = []; if (process.env.FIDEX_MODEL_PACK) out.push(process.env.FIDEX_MODEL_PACK);
   for (const d of dirs) { try { for (const f of fs.readdirSync(d)) if (/^FIDEX-SI-Model-.*\.zip$/i.test(f)) out.push(path.join(d, f)); } catch (_) {} }
+  for (const z of assembleParts(dirs)) if (!out.includes(z)) out.push(z);
   return out;
 }
 // Copy the bundled seed and/or extract the model ZIP into the models folder (manifests/ + blobs/). Idempotent.
@@ -69,7 +96,7 @@ function importModels(dir) {
       else tries.push(["unzip", ["-oq", z, "-d", dir]]);
       for (const [cmd, args] of tries) {
         const r = spawnSync(cmd, args, { windowsHide: true, timeout: 30 * 60 * 1000 });
-        if (r.status === 0 && (manifestOf(dir, "4b") || manifestOf(dir, "2b"))) return true;
+        if (r.status === 0 && (manifestOf(dir, "4b") || manifestOf(dir, "2b"))) { if (userData && z.startsWith(path.join(userData, "model-pack"))) { try { fs.rmSync(z, { force: true }); } catch (_) {} } return true; }
         L("error", `model pack import via ${cmd} failed: ` + (r.stderr ? String(r.stderr).slice(0, 200) : r.error && r.error.message));
       }
     }
@@ -109,7 +136,7 @@ async function ensure(opts = {}) {
         set("importing");
         if (importModels(modelsDir)) await refreshModels();
       }
-      if (!st.models.length) { lastOk = Date.now(); startWatch(); set("no_model", "No AI model is installed. Place FIDEX-SI-Model-qwen3.5-4b.zip next to the app (or in your Downloads folder) and restart FIDEX SI; it is imported automatically."); return true; }
+      if (!st.models.length) { lastOk = Date.now(); startWatch(); set("no_model", "No AI model is installed. Place all FIDEX-SI-Model-qwen3.5-4b.zip.001, .002, ... parts (or the single .zip) next to the app (or in your Downloads folder) and restart FIDEX SI; it is imported automatically."); return true; }
       set("ready"); lastOk = Date.now(); startWatch(); return true;
     } finally { inflight = null; }
   })();

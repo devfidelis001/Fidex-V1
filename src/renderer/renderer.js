@@ -285,7 +285,7 @@ try {
     let retrying = false;
     const describe = (st) => {
       if (!st) return "SpeedX: starting the AI engine...";
-      if (st.state === "no_model" || st.model_installed === false) return "SpeedX: AI model not installed (put FIDEX-SI-Model-qwen3.5-4b.zip next to the app and restart)";
+      if (st.state === "no_model" || st.model_installed === false) return "SpeedX: AI model not installed (put FIDEX-SI-Model-qwen3.5-4b.zip.001, .002, ... (put all the parts together) next to the app and restart)";
       if (st.state === "importing") return "SpeedX: installing the AI model...";
       if (st.state === "error") return "SpeedX: AI engine error - " + (st.error || "unknown");
       if (st.state === "ready" || st.reachable) return "SpeedX: loading the brain...";

@@ -120,7 +120,7 @@ function placeholderReply(userText, profile) {
 
 const FRIENDLY = {
   AI_UNAVAILABLE: "My SI engine is starting or reconnecting. FIDEX SI restarts it automatically; please send your message again in a few seconds.",
-  AI_MODEL_MISSING: "The FIDEX SI model is not installed yet. Put FIDEX-SI-Model-qwen3.5-4b.zip next to the app (or in your Downloads folder) and restart FIDEX SI; it is imported automatically.",
+  AI_MODEL_MISSING: "The FIDEX SI model is not installed yet. Put FIDEX-SI-Model-qwen3.5-4b.zip.001, .002, ... (put all the parts together) next to the app (or in your Downloads folder) and restart FIDEX SI; it is imported automatically.",
   AI_TIMEOUT: "The SI took too long to answer. Please try again, or ask something shorter.",
 };
 

@@ -4,7 +4,7 @@ import { streamRequest, stopStream } from "./stream.js";
 
 const FRIENDLY = {
   AI_UNAVAILABLE: "My AI engine is reconnecting automatically. Try again in a few seconds.",
-  AI_MODEL_MISSING: "The AI model is not installed yet. Restart FIDEX SI with FIDEX-SI-Model-qwen3.5-4b.zip next to the app; it is imported automatically.",
+  AI_MODEL_MISSING: "The AI model is not installed yet. Restart FIDEX SI with FIDEX-SI-Model-qwen3.5-4b.zip.001, .002, ... (put all the parts together) next to the app; it is imported automatically.",
   AI_TIMEOUT: "The AI took too long to answer. Try again.",
   NOT_IN_ELECTRON: "The AI is only available in the desktop app.",
 };
