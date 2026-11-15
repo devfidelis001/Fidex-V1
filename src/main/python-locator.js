@@ -23,6 +23,11 @@ function pythonCandidates({ backendDir, env = process.env, platform = process.pl
     if (!env.FIDEX_ALLOW_SYSTEM_PYTHON) return list; // FIDEX uses its own backend\\.venv consistently; no silent fallback to another Python
   }
 
+  const root = path.join(backendDir, "..");
+  for (const d of [path.join(root, "build-res", "python"), path.join(root, "python"), path.join(backendDir, "..", "..", "python")]) {
+    const exe = path.join(d, platform === "win32" ? "python.exe" : "bin/python");
+    if (fs.existsSync(exe)) list.push({ command: exe, args: [], label: "bundled python" });
+  }
   if (platform === "win32") {
     list.push({ command: "python", args: [], label: "python (PATH)" });
     list.push({ command: "py", args: ["-3"], label: "py -3" });

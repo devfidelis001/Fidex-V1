@@ -1,0 +1,8 @@
+pyautogui==0.9.54
+Pillow
+numpy
+opencv-python-headless
+dxcam
+comtypes
+uiautomation
+piper-tts

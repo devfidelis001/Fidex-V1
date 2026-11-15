@@ -1,0 +1,2 @@
+node_modules/ .pytest_cache/ add -Agit commit -m "Initial FIDEX AI upload"
+**/.env backend/backend/ src/renderer_v080_backup/ assets/whisper/ assets/tts/ add .gitignore

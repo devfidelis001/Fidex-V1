@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" class="ov-html">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FIDEX AI - Take Over</title>
+  <link rel="icon" type="image/svg+xml" href="assets/fidex-icon.svg" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="overlay.css" />
+</head>
+<body class="ov-body">
+
+  <svg class="sprite" width="0" height="0" aria-hidden="true" focusable="false">
+    <defs>
+      <symbol id="logo-kite" viewBox="0 0 100 122">
+        <polygon points="50,0 0,61 50,61" fill="#ffffff" />
+        <polygon points="50,0 100,61 50,61" fill="#bdbdbd" />
+        <polygon points="0,61 50,61 50,122" fill="#bdbdbd" />
+        <polygon points="100,61 50,61 50,122" fill="#ffffff" />
+      </symbol>
+      <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6" /></symbol>
+      <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18" /></symbol>
+      <symbol id="i-minimize" viewBox="0 0 24 24"><path d="M6 12h12" /></symbol>
+      <symbol id="i-expand" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-7 7M10 20H4v-6M4 20l7-7" /></symbol>
+      <symbol id="i-send" viewBox="0 0 24 24"><path d="M21 3 10.5 13.5M21 3l-6.5 18-4-7.5L3 9.5z" /></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7" /></symbol>
+      <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z" /></symbol>
+    </defs>
+  </svg>
+
+  <!-- Two independent elements: the logo circle and the activity panel. -->
+  <div id="ov" class="ov">
+
+    <button id="ov-orb" class="orb" type="button" aria-label="Show or hide the activity panel" aria-expanded="true" title="Click: show or hide the panel. Double-click: open FIDEX AI">
+      <svg class="orb-kite"><use href="#logo-kite" /></svg>
+    </button>
+
+    <section id="ov-panel" class="panel-ov" aria-label="FIDEX AI activity" aria-live="polite">
+      <header class="ph">
+        <span id="ov-dot" class="pdot" aria-hidden="true"></span>
+        <div class="ph-title"><b id="ov-stage">Starting</b><span id="ov-count"></span></div>
+        <button id="ov-more" class="pbtn" type="button" aria-expanded="false" aria-label="Show task details" title="Task details"><svg class="ic ic-sm pchev"><use href="#i-chevron" /></svg></button>
+        <button id="ov-open" class="pbtn" type="button" aria-label="Open full FIDEX AI interface" title="Open full interface"><svg class="ic ic-sm"><use href="#i-expand" /></svg></button>
+        <button id="ov-hide" class="pbtn" type="button" aria-label="Hide panel" title="Hide panel"><svg class="ic ic-sm"><use href="#i-minimize" /></svg></button>
+        <button id="ov-close" class="pbtn" type="button" aria-label="Close and stop" title="Close (stops the task)"><svg class="ic ic-sm"><use href="#i-close" /></svg></button>
+      </header>
+
+      <div class="p-taskrow"><p id="ov-task" class="p-task"></p><span class="ph-tag">Simulated</span></div>
+      <p id="ov-doing" class="p-doing"></p>
+      <p id="ov-why" class="p-why"></p>
+      <div class="p-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="ov-fill"></span></div>
+
+      <div class="p-scroll">
+        <div id="ov-requests" class="p-requests"></div>
+
+        <div id="ov-details" class="p-details" hidden>
+          <h4>Progress</h4>
+          <ol id="ov-steps" class="p-steps"></ol>
+          <h4>Activity</h4>
+          <ul id="ov-log" class="p-log"></ul>
+          <div id="ov-outstanding" class="p-out" hidden></div>
+          <div class="p-actions"><button id="ov-stop" class="pbtn-text" type="button">Stop task</button></div>
+        </div>
+      </div>
+
+      <form id="ov-form" class="p-form" autocomplete="off">
+        <div id="ov-target" class="p-target" hidden>
+          <span id="ov-target-text"></span>
+          <button id="ov-target-clear" class="pbtn-text" type="button">General note</button>
+        </div>
+        <div class="p-inputrow">
+          <input id="ov-input" type="text" placeholder="Add information or an instruction..." aria-label="Add information or an instruction" />
+          <button id="ov-send" class="p-send" type="submit" aria-label="Send" disabled><svg class="ic ic-sm"><use href="#i-send" /></svg></button>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <script type="module" src="js/overlay.js"></script>
+</body>
+</html>

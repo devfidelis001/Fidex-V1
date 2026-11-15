@@ -1,0 +1,46 @@
+{
+  "name": "fidex-ai",
+  "version": "0.8.0",
+  "description": "FIDEX AI - personal AI agent (Windows desktop application)",
+  "main": "src/main/main.js",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "verify": "node scripts/verify-env.js",
+    "test": "npm run test:python && npm run test:node",
+    "test:python": "node tests/run-python-tests.js",
+    "test:node": "node tests/run-node-tests.js",
+    "test:e2e": "electron tests/e2e/electron-e2e.js",
+    "test:renderer": "node tests/e2e/renderer-to-python.js"
+  },
+  "author": "FIDELIS",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "electron": "^45.2.1"
+  },
+  "build": {
+    "appId": "com.fidelis.fidexai",
+    "productName": "FIDEX AI",
+    "win": {
+      "icon": "assets/icons/icon.ico",
+      "target": "nsis"
+    },
+    "files": [
+      "src/**/*",
+      "assets/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "backend",
+        "to": "backend",
+        "filter": [
+          "**/*",
+          "!.venv/**",
+          "!**/__pycache__/**",
+          "!tests/**"
+        ]
+      }
+    ]
+  }
+}

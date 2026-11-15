@@ -1,0 +1,97 @@
+/* Home screen and shared chips. Compact, dark, informative. */
+
+.home { width: 100%; max-width: 860px; margin: 0 auto; padding: 22px 24px 24px; }
+
+.home-head { margin-bottom: 14px; }
+.eb-kite { width: 8px; height: 10px; }
+.home-title { margin: 6px 0 4px; font-size: 18px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.25; }
+.home-sub { margin: 0; max-width: 620px; color: var(--muted); font-size: 12.5px; line-height: 1.5; }
+
+/* ---------- Project input: the main element ---------- */
+.assign {
+  padding: 12px 14px 10px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--white);
+}
+.assign:focus-within { border-color: var(--silver); }
+.assign-q { display: block; margin: 0 0 8px; font-size: 13px; font-weight: 500; line-height: 1.45; color: var(--text); }
+.assign-input {
+  display: block;
+  width: 100%;
+  min-height: 64px;
+  max-height: 180px;
+  resize: none;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  font: inherit;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--text);
+  user-select: text;
+}
+.assign-input:focus { border-color: var(--line-strong); }
+.assign-input::placeholder { color: var(--faint); }
+.assign-bar { display: flex; align-items: center; gap: 12px; margin-top: 9px; }
+.assign-hint { flex: 1; min-width: 0; display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--faint); }
+.assign-hint .ic { color: var(--silver); }
+.assign-bar .btn { flex: none; height: 30px; }
+
+/* ---------- Capabilities ---------- */
+.caps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-top: 12px; }
+.cap {
+  display: flex;
+  gap: 9px;
+  min-width: 0;
+  padding: 10px 11px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--bg-soft);
+}
+.cap > .ic { margin-top: 1px; color: var(--silver); }
+.cap b { display: block; font-size: 12px; font-weight: 600; color: var(--text); }
+.cap p { margin: 2px 0 0; font-size: 11px; line-height: 1.45; color: var(--muted); }
+
+/* ---------- Lower panels ---------- */
+.home-row { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 8px; margin-top: 8px; }
+.hpanel { padding: 11px 13px 12px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--bg-soft); }
+.hpanel .label { margin-bottom: 8px; }
+.flow { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.flow li { display: flex; gap: 9px; align-items: baseline; font-size: 11.5px; color: var(--muted); }
+.flow b { flex: none; width: 16px; height: 16px; display: grid; place-items: center; border: 1px solid var(--line-strong); border-radius: 50%; font-size: 9.5px; font-weight: 600; color: var(--text-2); transform: translateY(2px); }
+.flow u { text-decoration: none; color: var(--text); font-weight: 600; }
+
+/* ---------- Chips (home, World Problems, Take Over page) ---------- */
+.chip-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
+.chip-row-left { justify-content: flex-start; }
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 26px;
+  padding: 0 11px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--bg-soft);
+  color: var(--text-2);
+  font-size: 11.5px;
+  cursor: pointer;
+}
+.chip:hover { background: var(--bg-hover); border-color: var(--silver); }
+.chip.selected { background: var(--black); border-color: var(--black); color: var(--bg); }
+
+@media (max-width: 900px) {
+  .caps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 640px) {
+  .home { padding: 16px 14px 18px; }
+  .home-row { grid-template-columns: minmax(0, 1fr); }
+  .assign-hint { display: none; }
+  .assign-bar .btn { margin-left: auto; }
+}
+@media (max-width: 460px) {
+  .caps { grid-template-columns: minmax(0, 1fr); }
+  .assign-q { font-size: 12.5px; }
+}

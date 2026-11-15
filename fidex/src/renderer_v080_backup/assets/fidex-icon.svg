@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <title>FIDEX AI</title>
+  <rect width="256" height="256" rx="56" fill="#000000"/>
+  <g transform="translate(64 47.5) scale(1.28)">
+    <polygon points="50,0 0,61 50,61" fill="#ffffff"/>
+    <polygon points="50,0 100,61 50,61" fill="#bdbdbd"/>
+    <polygon points="0,61 50,61 50,122" fill="#bdbdbd"/>
+    <polygon points="100,61 50,61 50,122" fill="#ffffff"/>
+  </g>
+</svg>

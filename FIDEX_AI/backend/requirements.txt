@@ -1,0 +1,2 @@
+# FIDEX AI backend dependencies.
+# Phase 1 Step 1: intentionally empty. Packages are added only when a feature needs them.

@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FIDEX AI</title>
+  <link rel="icon" type="image/svg+xml" href="assets/fidex-icon.svg" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="workspace.css" />
+  <link rel="stylesheet" href="views.css" />
+  <link rel="stylesheet" href="home.css" />
+  <link rel="stylesheet" href="welcome.css" />
+  <link rel="stylesheet" href="v09.css" />
+</head>
+<body>
+
+  <!-- Icon sprite: every icon in the interface is defined here once and reused with <use>. -->
+  <svg class="sprite" width="0" height="0" aria-hidden="true" focusable="false">
+    <defs>
+      <symbol id="logo-kite" viewBox="0 0 100 122">
+        <polygon points="50,0 0,61 50,61" fill="#ffffff" />
+        <polygon points="50,0 100,61 50,61" fill="#bdbdbd" />
+        <polygon points="0,61 50,61 50,122" fill="#bdbdbd" />
+        <polygon points="100,61 50,61 50,122" fill="#ffffff" />
+      </symbol>
+    </defs>
+    <defs>
+      <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" /></symbol>
+      <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z" /></symbol>
+      <symbol id="i-crosshair" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7" /><circle cx="12" cy="12" r="1.6" /><path d="M12 2v4M12 18v4M2 12h4M18 12h4" /></symbol>
+      <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3c2.6 2.6 4 5.7 4 9s-1.4 6.4-4 9c-2.6-2.6-4-5.7-4-9s1.4-6.4 4-9z" /></symbol>
+      <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M9.6 9.6a2.5 2.5 0 1 1 3.6 2.2c-.8.4-1.2.9-1.2 1.8" /><path d="M12 17h.01" /></symbol>
+      <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></symbol>
+      <symbol id="i-settings" viewBox="0 0 24 24"><path d="M4 7h9M19 7h1M4 17h1M11 17h9" /><circle cx="16" cy="7" r="2.2" /><circle cx="8" cy="17" r="2.2" /></symbol>
+      <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M12 11v5M12 8h.01" /></symbol>
+      <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3" /><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21" /></symbol>
+      <symbol id="i-send" viewBox="0 0 24 24"><path d="M21 3 10.5 13.5M21 3l-6.5 18-4-7.5L3 9.5z" /></symbol>
+      <symbol id="i-keyboard" viewBox="0 0 24 24"><rect x="2.5" y="6" width="19" height="12" rx="2" /><path d="M6.5 10h.01M10 10h.01M14 10h.01M17.5 10h.01M7.5 14h9" /></symbol>
+      <symbol id="i-paperclip" viewBox="0 0 24 24"><path d="m20 11-8.5 8.5a5 5 0 0 1-7-7L13 4a3.5 3.5 0 0 1 5 5l-8.5 8.5a2 2 0 0 1-3-3L14 7" /></symbol>
+      <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6" /></symbol>
+      <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18" /></symbol>
+      <symbol id="i-minimize" viewBox="0 0 24 24"><path d="M6 12h12" /></symbol>
+      <symbol id="i-maximize" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="1" /></symbol>
+      <symbol id="i-restore" viewBox="0 0 24 24"><rect x="8.5" y="5.5" width="10" height="10" rx="1" /><path d="M5.5 9v9.5H15" /></symbol>
+      <symbol id="i-expand" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-7 7M10 20H4v-6M4 20l7-7" /></symbol>
+      <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" /></symbol>
+      <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13" /></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7" /></symbol>
+      <symbol id="i-stop" viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="1.5" /></symbol>
+      <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5zM3 13l9 5 9-5" /></symbol>
+      <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z" /><path d="m9 12 2 2 4-4" /></symbol>
+      <symbol id="i-list" viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11M4.5 6h.01M4.5 12h.01M4.5 18h.01" /></symbol>
+      <symbol id="i-code" viewBox="0 0 24 24"><path d="m8 8-5 4 5 4M16 8l5 4-5 4M14 5l-4 14" /></symbol>
+      <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5" /><path d="m20 20-4.2-4.2" /></symbol>
+      <symbol id="i-megaphone" viewBox="0 0 24 24"><path d="M3 10v4h3l8 4V6L6 10z" /><path d="M18 9a4 4 0 0 1 0 6" /></symbol>
+      <symbol id="i-briefcase" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2" /><path d="M9 7V5h6v2M3 13h18" /></symbol>
+      <symbol id="i-pulse" viewBox="0 0 24 24"><path d="M3 12h4l3-7 4 14 3-7h4" /></symbol>
+      <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6" /><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5" /></symbol>
+      <symbol id="i-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="m15.5 8.5-2 5-5 2 2-5z" /></symbol>
+      <symbol id="i-bulb" viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.8.8 1 1.5 1 2.5h6c0-1 .2-1.7 1-2.5A6 6 0 0 0 12 3z" /></symbol>
+    </defs>
+  </svg>
+
+  <!-- Title bar: always visible (window drag area + window controls). -->
+  <header id="titlebar" class="titlebar">
+    <button id="menu-btn" class="tb-btn tb-menu" type="button" aria-label="Open menu"><svg class="ic"><use href="#i-menu" /></svg></button>
+    <div class="tb-drag" aria-hidden="true">
+      <span class="tb-brand"><svg class="tb-kite"><use href="#logo-kite" /></svg>FIDEX AI</span>
+    </div>
+    <div class="tb-controls">
+      <button id="win-min" class="tb-btn" type="button" aria-label="Minimise" title="Minimise"><svg class="ic"><use href="#i-minimize" /></svg></button>
+      <button id="win-max" class="tb-btn tb-max" type="button" aria-label="Maximise" title="Maximise"><svg class="ic"><use id="win-max-use" href="#i-maximize" /></svg></button>
+      <button id="win-close" class="tb-btn tb-close" type="button" aria-label="Close" title="Close"><svg class="ic"><use href="#i-close" /></svg></button>
+    </div>
+  </header>
+
+  <div id="stage" class="stage">
+
+    <!-- Welcome screen: FIDEX AI name plus a bottom line and a credit. Styled only by welcome.css. -->
+    <div id="welcome-view" class="welcome-view">
+      <div class="welcome-center">
+        <h1 class="brand"><span class="brand-main">FIDEX</span> <span class="brand-sub" aria-label="AI"><span class="ltr-slot" aria-hidden="true"><span class="ltr-a">A</span><span class="ltr-s">S</span></span>I</span></h1>
+      </div>
+      <p class="welcome">Take a rest, CEO. Let's FIDEX AI take over.</p>
+      <p class="credit">Built by Fidelis Francis</p>
+    </div>
+
+    <!-- Main application -->
+    <div id="workspace-view" class="workspace" hidden>
+
+      <aside id="sidebar" class="sidebar" aria-label="Main navigation">
+        <div class="brandbar">
+          <div class="logo-tile"><svg class="logo"><use href="#logo-kite" /></svg></div>
+          <div class="brand-text">
+            <span class="brand-name"><b>FIDEX</b> AI</span>
+            <span class="brand-tag">Think &bull; Plan &bull; Execute</span>
+          </div>
+          <button id="sidebar-close" class="icon-btn sidebar-close" type="button" aria-label="Close menu"><svg class="ic"><use href="#i-close" /></svg></button>
+        </div>
+
+        <button id="new-chat" class="nav-item nav-new" type="button" data-route="chat-new"><svg class="ic"><use href="#i-plus" /></svg><span>New chat</span></button>
+
+        <nav class="nav" aria-label="Features">
+          <button class="nav-item nav-primary" type="button" data-route="takeover"><svg class="ic"><use href="#i-crosshair" /></svg><span>Take Over</span></button>
+          <button class="nav-item nav-world" type="button" data-route="world"><svg class="ic"><use href="#i-globe" /></svg><span>Start Solving World Problems</span></button>
+          <button class="nav-item" type="button" data-route="guide"><svg class="ic"><use href="#i-compass" /></svg><span>Guide Me</span></button>
+          <button class="nav-item" type="button" data-route="profile"><svg class="ic"><use href="#i-user" /></svg><span>Give Me Your Details</span></button>
+          <button class="nav-item" type="button" data-route="howto"><svg class="ic"><use href="#i-help" /></svg><span>How to Use</span></button>
+        </nav>
+
+        <nav class="nav nav-bottom" aria-label="Library and settings">
+          <button class="nav-item" type="button" data-route="history"><svg class="ic"><use href="#i-clock" /></svg><span>History</span><svg class="ic ic-sm nav-chev"><use href="#i-chevron" /></svg></button>
+          <button class="nav-item" type="button" data-route="permissions"><svg class="ic"><use href="#i-shield" /></svg><span>Permissions</span></button>
+          <button class="nav-item" type="button" data-route="settings"><svg class="ic"><use href="#i-settings" /></svg><span>Settings</span></button>
+          <button class="nav-item" type="button" data-route="about"><svg class="ic"><use href="#i-info" /></svg><span>About</span></button>
+        </nav>
+
+        <p class="side-foot">A smarter tomorrow, together.</p>
+      </aside>
+
+      <div id="sidebar-backdrop" class="backdrop" hidden></div>
+
+      <main class="main" id="main">
+
+        <!-- Home -->
+        <section id="view-home" class="view view-home" data-view="home">
+          <div class="view-scroll">
+            <div class="home">
+              <header class="home-head">
+                <span class="eyebrow"><svg class="eb-kite"><use href="#logo-kite" /></svg>Executive agent</span>
+                <h2 class="home-title">Assign the project. FIDEX AI manages the work.</h2>
+                <p class="home-sub">An executive agent that takes an idea from first brief to finished result. It plans, builds, promotes and operates, then reports back to you as it goes.</p>
+              </header>
+
+              <form class="assign" id="home-cmd" autocomplete="off">
+                <label class="assign-q" for="home-input">Could you tell me about your project and share the important details I should understand before getting started?</label>
+                <textarea id="home-input" class="assign-input cmd-input" rows="3" placeholder="Describe the project or give an instruction. Share what you know now; FIDEX AI will ask for the rest when it needs it." aria-label="Project description or instruction"></textarea>
+                <div class="assign-bar">
+                  <span class="assign-hint"><svg class="ic ic-sm"><use href="#i-shield" /></svg>Publishing, sending, spending and deleting always wait for your approval.</span>
+                  <button class="btn btn-dark cmd-send" type="submit" disabled><svg class="ic ic-sm"><use href="#i-send" /></svg>Assign to FIDEX AI</button>
+                </div>
+              </form>
+
+              <div class="caps" aria-label="What FIDEX AI can manage">
+                <article class="cap"><svg class="ic"><use href="#i-bulb" /></svg><div><b>Understands the idea</b><p>Turns a rough brief into a clear objective and a list of what is needed.</p></div></article>
+                <article class="cap"><svg class="ic"><use href="#i-list" /></svg><div><b>Plans and develops</b><p>Breaks a project into stages and carries approved work forward.</p></div></article>
+                <article class="cap"><svg class="ic"><use href="#i-code" /></svg><div><b>Builds digital products</b><p>Websites and digital products, from structure through to launch.</p></div></article>
+                <article class="cap"><svg class="ic"><use href="#i-search" /></svg><div><b>Researches markets</b><p>Studies audiences, competitors and opportunities worth pursuing.</p></div></article>
+                <article class="cap"><svg class="ic"><use href="#i-megaphone" /></svg><div><b>Promotes products</b><p>Plans and runs marketing so the right people find what you make.</p></div></article>
+                <article class="cap"><svg class="ic"><use href="#i-chat" /></svg><div><b>Talks to customers</b><p>Drafts and handles customer communication in your voice.</p></div></article>
+                <article class="cap"><svg class="ic"><use href="#i-briefcase" /></svg><div><b>Runs operations</b><p>Keeps day-to-day business operations organised and moving.</p></div></article>
+                <article class="cap"><svg class="ic"><use href="#i-pulse" /></svg><div><b>Monitors and reports</b><p>Tracks progress and raises problems before they grow.</p></div></article>
+              </div>
+
+              <div class="home-row">
+                <section class="hpanel" aria-label="How work flows">
+                  <h4 class="label">How work flows</h4>
+                  <ol class="flow">
+                    <li><b>1</b><span><u>You assign</u> a project or an instruction.</span></li>
+                    <li><b>2</b><span><u>FIDEX AI plans</u> the work and lists what it needs.</span></li>
+                    <li><b>3</b><span><u>It works</u> and reports through the Take Over panel.</span></li>
+                    <li><b>4</b><span><u>It asks</u> for missing details only when required.</span></li>
+                    <li><b>5</b><span><u>You approve</u> anything with real-world consequences.</span></li>
+                  </ol>
+                </section>
+                <section class="hpanel" aria-label="Recent assignments">
+                  <h4 class="label">Recent assignments</h4>
+                  <ul id="home-recent" class="mini-list"></ul>
+                  <p id="home-recent-empty" class="muted small">Nothing assigned yet.</p>
+                </section>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Chat -->
+        <section id="view-chat" class="view view-chat" data-view="chat" hidden>
+          <header class="page-head">
+            <h2 id="chat-title" class="page-title">New chat</h2>
+            <span class="status-chip">AI brain: not connected</span>
+          </header>
+          <div id="messages" class="messages" role="log" aria-live="polite">
+            <div id="empty-state" class="empty-state">
+              <div class="logo-tile logo-tile-md"><svg class="logo"><use href="#logo-kite" /></svg></div>
+              <p>Type a message below to start a conversation.</p>
+              <p class="muted">The AI brain is not connected yet, so replies are clearly labelled placeholders.</p>
+            </div>
+          </div>
+          <form id="composer" class="composer" autocomplete="off">
+            <textarea id="input" rows="1" placeholder="Message FIDEX AI..." aria-label="Message"></textarea>
+            <button id="send" class="round-btn round-btn-dark" type="submit" aria-label="Send" disabled><svg class="ic"><use href="#i-send" /></svg></button>
+          </form>
+          <p class="composer-note">Enter to send &middot; Shift+Enter for a new line &middot; Placeholder mode: replies are not from a real AI.</p>
+        </section>
+
+        <!-- Take Over -->
+        <section id="view-takeover" class="view" data-view="takeover" hidden>
+          <div class="view-scroll">
+            <div class="page-inner">
+              <div class="page-head page-head-stack">
+                <div class="eyebrow"><svg class="ic ic-sm"><use href="#i-crosshair" /></svg>Take Over</div>
+                <h2 class="page-title">Assign work to FIDEX AI</h2>
+                <p class="page-sub">Describe a project or give an instruction. FIDEX AI then works from a small floating circle and activity panel, so your screen stays free.</p>
+              </div>
+
+              <form id="takeover-form" class="panel to-form" autocomplete="off">
+                <textarea id="takeover-input" rows="3" placeholder="Type your instruction..." aria-label="Take Over instruction"></textarea>
+                <div class="to-bar">
+                  <button id="takeover-mic" class="round-btn" type="button" aria-label="Voice instruction (coming later)" title="Voice instruction &mdash; coming later"><svg class="ic"><use href="#i-mic" /></svg></button>
+                  <span class="to-hint">Enter to send &middot; Shift+Enter for a new line</span>
+                  <button id="takeover-send" class="btn btn-dark" type="submit" disabled><svg class="ic ic-sm"><use href="#i-send" /></svg>Assign</button>
+                </div>
+              </form>
+
+              <p class="notice"><span class="dot"></span>Preview only. FIDEX AI shows the full activity flow, but does not carry out tasks yet.</p>
+
+              <div class="block">
+                <h4 class="label">Example instructions</h4>
+                <div id="takeover-examples" class="chip-row chip-row-left"></div>
+              </div>
+
+              <div class="block">
+                <h4 class="label">What happens next</h4>
+                <ol class="steps-mini">
+                  <li><b>1</b><span>You assign a project or instruction. Details can come later.</span></li>
+                  <li><b>2</b><span>The full window hides. A small logo circle and an activity panel stay on your screen.</span></li>
+                  <li><b>3</b><span>The panel shows the stage, asks for what is missing and requests your approval for consequential actions. Reply from the panel while work continues.</span></li>
+                  <li><b>4</b><span>Open the full interface at any time from the panel, or from the tray icon.</span></li>
+                </ol>
+              </div>
+
+              <div class="block">
+                <h4 class="label">Recent assignments</h4>
+                <ul id="takeover-recent" class="mini-list"></ul>
+                <p id="takeover-recent-empty" class="muted small">Nothing sent yet.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Start Solving World Problems -->
+        <section id="view-world" class="view" data-view="world" hidden>
+          <div class="view-scroll">
+            <div class="page-inner">
+              <div class="page-head page-head-stack">
+                <div class="eyebrow"><svg class="ic ic-sm"><use href="#i-globe" /></svg>World Problems</div>
+                <h2 class="page-title">Start Solving World Problems</h2>
+                <p class="page-sub">A dedicated workspace for researching a real-world problem and working towards solutions.</p>
+              </div>
+
+              <div class="banner">
+                <svg class="ic"><use href="#i-info" /></svg>
+                <div><b>Not connected yet.</b> This workspace will be linked to the research and problem-solving engine in a later roadmap phase. Nothing runs from this page today.</div>
+              </div>
+
+              <form id="world-form" class="panel world-form" autocomplete="off">
+                <label class="field-label" for="world-topic">Problem to explore</label>
+                <textarea id="world-topic" rows="3" placeholder="Describe the problem you want FIDEX AI to work on..."></textarea>
+                <div class="field-label">Focus area</div>
+                <div id="world-areas" class="chip-row chip-row-left" role="group" aria-label="Focus area"></div>
+                <div class="to-bar">
+                  <span class="to-hint" id="world-state">Draft only &middot; nothing is sent anywhere</span>
+                  <button id="world-start" class="btn btn-dark" type="submit"><svg class="ic ic-sm"><use href="#i-globe" /></svg>Start research</button>
+                </div>
+              </form>
+
+              <div id="world-result" class="panel placeholder-state" hidden>
+                <div class="ph-icon"><svg class="ic"><use href="#i-layers" /></svg></div>
+                <div>
+                  <b>Placeholder state</b>
+                  <p id="world-result-text" class="muted small"></p>
+                </div>
+              </div>
+
+              <div class="block">
+                <h4 class="label">Planned workflow</h4>
+                <ol class="pipeline">
+                  <li><b>1</b><span>Define</span><i>Clarify the problem</i></li>
+                  <li><b>2</b><span>Research</span><i>Gather sources</i></li>
+                  <li><b>3</b><span>Analyse</span><i>Find causes</i></li>
+                  <li><b>4</b><span>Propose</span><i>Draft solutions</i></li>
+                  <li><b>5</b><span>Review</span><i>Check with you</i></li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- How to Use -->
+        <section id="view-howto" class="view" data-view="howto" hidden>
+          <div class="view-scroll">
+            <div class="page-inner">
+              <div class="page-head page-head-stack">
+                <div class="eyebrow"><svg class="ic ic-sm"><use href="#i-help" /></svg>How to Use</div>
+                <h2 class="page-title">How FIDEX AI works</h2>
+                <p class="page-sub">A short guide to what each part of the application is for. Some functions are previews while FIDEX AI is built step by step.</p>
+              </div>
+
+              <div class="guide-grid">
+                <article class="guide-card">
+                  <div class="guide-ic"><svg class="ic"><use href="#i-crosshair" /></svg></div>
+                  <h3>Assign a project</h3>
+                  <p>Describe a project or give an instruction on the home screen. You do not need every detail up front: FIDEX AI starts from what you know and asks for the rest when needed. It is designed to manage work, not to chat all day.</p>
+                </article>
+                <article class="guide-card">
+                  <div class="guide-ic"><svg class="ic"><use href="#i-expand" /></svg></div>
+                  <h3>Take Over: circle and activity panel</h3>
+                  <p>After you assign work, the full window hides and two small elements remain: a logo circle and an activity panel beside it. Click the circle to show or hide the panel. Use the open button in the panel, or the tray icon, to bring back the full interface.</p>
+                </article>
+                <article class="guide-card">
+                  <div class="guide-ic"><svg class="ic"><use href="#i-chat" /></svg></div>
+                  <h3>Questions and your input</h3>
+                  <p>When FIDEX AI is missing something, such as a folder location, an account or the target audience, it asks in the panel. Answer there, or add information or new instructions at any time. The task keeps going while you reply.</p>
+                </article>
+                <article class="guide-card">
+                  <div class="guide-ic"><svg class="ic"><use href="#i-shield" /></svg></div>
+                  <h3>Approvals</h3>
+                  <p>Publishing, sending messages, spending money, deleting files and external commitments always stop and wait for your approval in the panel. Nothing consequential happens without it.</p>
+                </article>
+                <article class="guide-card">
+                  <div class="guide-ic"><svg class="ic"><use href="#i-globe" /></svg></div>
+                  <h3>Start Solving World Problems</h3>
+                  <p>A separate workspace for researching a problem and working towards solutions. It is a placeholder until the research engine is connected.</p>
+                </article>
+                <article class="guide-card">
+                  <div class="guide-ic"><svg class="ic"><use href="#i-clock" /></svg></div>
+                  <h3>History and Settings</h3>
+                  <p>History keeps your conversations and assignments. Settings control whether the Take Over panel opens after you assign work and whether it stays on top of other windows.</p>
+                </article>
+              </div>
+
+              <p class="notice"><span class="dot"></span>The AI brain, voice recognition and task execution are not connected yet. Everything FIDEX AI appears to do is a clearly labelled simulation.</p>
+              <div class="actions-row">
+                <button class="btn btn-dark" type="button" data-route="takeover"><svg class="ic ic-sm"><use href="#i-crosshair" /></svg>Try Take Over</button>
+                <button class="btn btn-outline" type="button" data-route="home">Back to home</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Guide Me -->
+        <section id="view-guide" class="view" data-view="guide" hidden>
+          <div class="view-scroll">
+            <div class="page-inner">
+              <div class="page-head page-head-stack">
+                <div class="eyebrow"><svg class="ic ic-sm"><use href="#i-compass" /></svg>Guide Me</div>
+                <h2 class="page-title">Plan it. Follow it. Finish it.</h2>
+                <p class="page-sub">Tell FIDEX AI what you want to get done. It turns it into steps you can tick off, keeps your progress, and lets you pick up where you stopped.</p>
+              </div>
+
+              <div id="guide-resume" class="banner" hidden>
+                <svg class="ic"><use href="#i-clock" /></svg>
+                <div><b id="guide-resume-text"></b></div>
+                <button id="guide-resume-btn" class="btn btn-dark btn-sm gd-resume-btn" type="button">Resume</button>
+              </div>
+
+              <form id="guide-form" class="panel world-form" autocomplete="off">
+                <label class="field-label" for="guide-goal">What do you want to get done?</label>
+                <input id="guide-goal" class="pf-input" type="text" maxlength="200" placeholder="For example: Launch my online shop" />
+                <label class="field-label" for="guide-steps-input">Your own steps (optional, one per line)</label>
+                <textarea id="guide-steps-input" class="pf-input" rows="3" placeholder="Leave empty and FIDEX AI will draft the steps for you."></textarea>
+                <div class="to-bar">
+                  <span class="to-hint">Saved automatically as you tick steps off.</span>
+                  <button class="btn btn-dark" type="submit"><svg class="ic ic-sm"><use href="#i-compass" /></svg>Create plan</button>
+                </div>
+              </form>
+
+              <div id="guide-plan" class="panel gd-plan" hidden>
+                <div class="gd-head">
+                  <h3 id="guide-plan-title" class="gd-title"></h3>
+                  <button id="guide-plan-close" class="icon-btn" type="button" aria-label="Close plan"><svg class="ic ic-sm"><use href="#i-close" /></svg></button>
+                </div>
+                <div class="gd-progress"><div class="gd-track"><div id="guide-bar" class="gd-bar"></div></div><span id="guide-pct" class="gd-pct">0%</span></div>
+                <p id="guide-next" class="gd-next"></p>
+                <ol id="guide-steps" class="gd-steps"></ol>
+                <form id="guide-add-form" class="gd-add" autocomplete="off">
+                  <input id="guide-add-input" class="pf-input" type="text" maxlength="200" placeholder="Add another step..." aria-label="Add a step" />
+                  <button class="btn btn-outline btn-sm" type="submit">Add</button>
+                </form>
+              </div>
+
+              <div class="block">
+                <h4 class="label">Your plans</h4>
+                <ul id="guide-list" class="list"></ul>
+                <p id="guide-empty" class="empty-line">No plans yet.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Give Me Your Details -->
+        <section id="view-profile" class="view" data-view="profile" hidden>
+          <div class="view-scroll">
+            <div class="page-inner">
+              <div class="page-head page-head-stack">
+                <div class="eyebrow"><svg class="ic ic-sm"><use href="#i-user" /></svg>Give Me Your Details</div>
+                <h2 class="page-title">Tell FIDEX AI about you</h2>
+                <p class="page-sub">Share only what you want. Your details are saved on this device and added to FIDEX AI's memory, so answers can fit who you are and what you do.</p>
+              </div>
+              <form id="profile-form" class="panel world-form" autocomplete="off">
+                <h4 class="label">Personal</h4>
+                <div id="profile-personal" class="pf-grid"></div>
+                <h4 class="label pf-gap">Professional</h4>
+                <div id="profile-professional" class="pf-grid"></div>
+                <div class="to-bar">
+                  <span id="profile-state" class="to-hint"></span>
+                  <button id="profile-clear" class="btn btn-outline" type="button">Remove my details</button>
+                  <button class="btn btn-dark" type="submit"><svg class="ic ic-sm"><use href="#i-check" /></svg>Save</button>
+                </div>
+              </form>
+              <p class="notice"><span class="dot"></span>Do not enter passwords or card numbers. You can change or remove your details at any time.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Permissions -->
+        <section id="view-permissions" class="view" data-view="permissions" hidden>
+          <div class="view-scroll">
+            <div class="page-inner">
+              <div class="page-head page-head-stack">
+                <div class="eyebrow"><svg class="ic ic-sm"><use href="#i-shield" /></svg>Permissions</div>
+                <h2 class="page-title">What FIDEX AI may use</h2>
+                <p class="page-sub">Every permission is off until you switch it on. You can turn any of them off again at any time.</p>
+              </div>
+              <div id="permissions-list" class="setting-group"></div>
+              <div class="actions-row actions-left">
+                <button id="permissions-reset" class="btn btn-outline" type="button">Switch all off</button>
+              </div>
+              <p class="notice"><span class="dot"></span>If the system has blocked a permission, allow it in your system settings first.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- History -->
+        <section id="view-history" class="view" data-view="history" hidden>
+          <div class="view-scroll">
+            <div class="page-inner">
+              <div class="page-head page-head-stack">
+                <div class="eyebrow"><svg class="ic ic-sm"><use href="#i-clock" /></svg>History</div>
+                <h2 class="page-title">History</h2>
+              </div>
+              <div class="tabs" role="tablist">
+                <button id="tab-chats" class="tab active" type="button" role="tab" aria-selected="true">Conversations <span id="count-chats" class="tab-count">0</span></button>
+                <button id="tab-commands" class="tab" type="button" role="tab" aria-selected="false">Take Over <span id="count-commands" class="tab-count">0</span></button>
+              </div>
+              <ul id="history-chats" class="list"></ul>
+              <ul id="history-commands" class="list" hidden></ul>
+              <p id="history-empty" class="empty-line">Nothing here yet.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Settings -->
+        <section id="view-settings" class="view" data-view="settings" hidden>
+          <div class="view-scroll">
+            <div class="page-inner">
+              <div class="page-head page-head-stack">
+                <div class="eyebrow"><svg class="ic ic-sm"><use href="#i-settings" /></svg>Settings</div>
+                <h2 class="page-title">Settings</h2>
+              </div>
+
+              <div class="setting-group">
+                <h4 class="label">Take Over panel</h4>
+                <label class="switch-row">
+                  <span><b>Open the Take Over panel after assigning</b><i>Hide the full window and show the logo circle and activity panel.</i></span>
+                  <input id="set-auto-compact" type="checkbox" class="switch" />
+                </label>
+                <label class="switch-row">
+                  <span><b>Keep the panel on top</b><i>Float above other windows while FIDEX AI is working.</i></span>
+                  <input id="set-on-top" type="checkbox" class="switch" />
+                </label>
+              </div>
+
+              <div class="setting-group">
+                <h4 class="label">Voice and AI engine</h4>
+                <label class="switch-row is-disabled">
+                  <span><b>Voice commands</b><i>Not available yet. Planned for a later phase.</i></span>
+                  <input type="checkbox" class="switch" disabled />
+                </label>
+                <label class="switch-row is-disabled">
+                  <span><b>AI engine</b><i>Not connected. Chat replies are placeholders.</i></span>
+                  <input type="checkbox" class="switch" disabled />
+                </label>
+              </div>
+
+              <div class="setting-group">
+                <h4 class="label">Stored data</h4>
+                <p id="stored-count" class="muted small"></p>
+                <div class="actions-row actions-left">
+                  <button id="clear-all" class="btn btn-outline" type="button">Clear conversations</button>
+                  <button id="clear-commands" class="btn btn-outline" type="button">Clear Take Over history</button>
+                </div>
+              </div>
+
+              <div class="setting-group">
+                <h4 class="label">Interface</h4>
+                <button id="show-welcome" class="btn btn-outline" type="button">Show welcome screen</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- About -->
+        <section id="view-about" class="view" data-view="about" hidden>
+          <div class="view-scroll">
+            <div class="page-inner page-inner-narrow">
+              <div class="about-hero">
+                <div class="logo-tile logo-tile-lg"><svg class="logo"><use href="#logo-kite" /></svg></div>
+                <h2 class="page-title">FIDEX AI</h2>
+                <p class="page-sub">Personal AI agent &middot; Think &bull; Plan &bull; Execute</p>
+                <p class="about-blurb">FIDEX AI is an executive agent that takes a project from first brief to finished result. It plans the work, keeps your progress, remembers what you tell it, and asks before anything with real-world consequences.</p>
+              </div>
+              <dl class="kv">
+                <dt>Version</dt><dd id="about-version">-</dd>
+                <dt>Electron</dt><dd id="about-electron">-</dd>
+                <dt>Chromium</dt><dd id="about-chrome">-</dd>
+                <dt>Developer</dt><dd><a id="about-developer" class="ext-link" href="https://fidelisfrancis.pages.dev/" rel="noopener noreferrer">Fidelis Francis</a></dd>
+                <dt>Release</dt><dd>v0.9.0 &mdash; Details, Permissions, Guide Me</dd>
+                <dt>Memory</dt><dd>Your saved details are used when answering</dd>
+                <dt>AI engine</dt><dd>Not connected</dd>
+              </dl>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  </div>
+
+  <script type="module" src="renderer.js"></script>
+</body>
+</html>

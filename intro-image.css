@@ -1,0 +1,69 @@
+/* FIDEX intro: unbox robot, float, blink, hello. Black full-screen. */
+.fr-intro { background: #000; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+.fr-intro .fr-skip { z-index: 5; }
+.fx-stage { position: relative; width: min(78vw, 52vmin); height: min(94vw, 62vmin); margin-top: -6vh; }
+.fx-stage * { box-sizing: border-box; }
+
+/* title */
+.fr-intro .fx-title {
+  position: absolute; left: 0; right: 0; bottom: 9%; margin: 0; z-index: 4; text-align: center;
+  color: #fff; font-weight: 300; font-size: clamp(16px, 3vw, 34px); letter-spacing: .5em; padding-left: .5em;
+  opacity: 0; transform: translateY(12px); text-shadow: 0 0 24px rgba(255,255,255,.35);
+}
+.fr-intro.fx-play .fx-title { animation: fxTitle 1.6s ease-out .5s forwards; }
+
+/* box */
+.fx-box { position: absolute; left: 20%; bottom: 0; width: 60%; height: 34%; opacity: 0; transform: translateY(18px) scale(.94); }
+.fx-play .fx-box { animation: fxBoxIn 1s cubic-bezier(.2,.7,.2,1) .1s forwards, fxShake .9s ease-in-out 1.2s; }
+.fx-inside { position: absolute; inset: 0; background: #1a1a1d; border-radius: 3px; z-index: 1; }
+.fx-front {
+  position: absolute; inset: 0; z-index: 3; border-radius: 3px;
+  background: linear-gradient(180deg, #f4f4f5, #c9c9cd); box-shadow: 0 0 40px rgba(255,255,255,.08);
+}
+.fx-tape { position: absolute; left: 44%; width: 12%; top: 0; height: 100%; background: rgba(200,170,120,.35); }
+.fx-flap { position: absolute; top: -2px; width: 50%; height: 34%; z-index: 4; background: linear-gradient(180deg, #ffffff, #d8d8dc); }
+.fx-fl { left: 0; transform-origin: 0 100%; border-radius: 3px 0 0 0; }
+.fx-fr { right: 0; transform-origin: 100% 100%; border-radius: 0 3px 0 0; }
+.fx-play .fx-fl { animation: fxFlapL .8s cubic-bezier(.3,.6,.3,1) 2s forwards; }
+.fx-play .fx-fr { animation: fxFlapR .8s cubic-bezier(.3,.6,.3,1) 2.05s forwards; }
+
+/* light + sparks */
+.fx-glow { position: absolute; left: 5%; right: 5%; top: 6%; height: 70%; border-radius: 50%; opacity: 0; z-index: 0;
+  background: radial-gradient(circle, rgba(140,225,255,.45), rgba(140,225,255,0) 68%); }
+.fx-play .fx-glow { animation: fxGlow 2.6s ease-out 2.2s forwards; }
+.fx-sparks { position: absolute; left: 50%; top: 48%; width: 0; height: 0; z-index: 2; pointer-events: none; }
+.fx-sparks i { position: absolute; width: 6px; height: 6px; margin: -3px; border-radius: 50%; background: #bfeeff; box-shadow: 0 0 10px #8fe3ff; opacity: 0; }
+.fx-play .fx-sparks i { animation: fxSpark 1.6s ease-out 2.6s forwards; }
+
+/* robot: rise, then float */
+.fx-robot { position: absolute; left: -17%; width: 134%; bottom: 3%; z-index: 2; transform-origin: 50% 100%; transform: translateY(0) scale(.48); }
+.fx-play .fx-robot { animation: fxRise 1.7s cubic-bezier(.2,.8,.2,1) 2.5s forwards; }
+.fx-bob { position: relative; }
+.fx-play .fx-bob { animation: fxFloat 2.4s ease-in-out 4.2s infinite; }
+.fx-bob img { display: block; width: 100%; height: auto; filter: drop-shadow(0 8px 28px rgba(150,225,255,.22)); user-select: none; }
+/* eyelids: cover the cyan eyes to blink */
+.fx-lid { position: absolute; top: 25.5%; width: 8%; height: 11%; border-radius: 50%; background: #0f2638; transform: scaleY(0); transform-origin: 50% 50%; }
+.fx-l { left: 32.8%; }
+.fx-r { left: 54%; }
+.fx-play .fx-lid { animation: fxBlink 7s linear 4s infinite; }
+
+/* hello */
+.fx-hello { position: absolute; left: 50%; top: -2%; z-index: 4; transform: translate(-50%, 10px) scale(.8); opacity: 0;
+  color: #fff; font-size: clamp(22px, 4.2vmin, 44px); font-weight: 300; letter-spacing: .08em; padding: .35em .9em;
+  border: 1px solid rgba(255,255,255,.55); border-radius: 999px; background: rgba(255,255,255,.06); text-shadow: 0 0 18px rgba(160,230,255,.6); }
+.fx-play .fx-hello { animation: fxHello 3.6s ease-out 5.2s forwards; }
+
+@keyframes fxTitle { to { opacity: 1; transform: none; letter-spacing: .38em; } }
+@keyframes fxBoxIn { to { opacity: 1; transform: none; } }
+@keyframes fxShake { 0%,100% { transform: none; } 15% { transform: translateX(-2%) rotate(-1.4deg); } 35% { transform: translateX(2%) rotate(1.4deg); } 55% { transform: translateX(-1.5%) rotate(-1deg); } 75% { transform: translateX(1%) rotate(.6deg); } }
+@keyframes fxFlapL { to { transform: rotate(-118deg); } }
+@keyframes fxFlapR { to { transform: rotate(118deg); } }
+@keyframes fxGlow { 0% { opacity: 0; transform: scale(.6); } 35% { opacity: 1; } 100% { opacity: .55; transform: scale(1); } }
+@keyframes fxSpark { 0% { opacity: 0; transform: translate(0,0) scale(.3); } 20% { opacity: 1; } 100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(var(--s)); } }
+@keyframes fxRise { 0% { transform: translateY(0) scale(.48); } 70% { transform: translateY(-67%) scale(1.04); } 100% { transform: translateY(-62%) scale(1); } }
+@keyframes fxFloat { 0%,100% { transform: translateY(0) rotate(-.8deg); } 50% { transform: translateY(-4.5%) rotate(.8deg); } }
+@keyframes fxBlink { 0%,5%,100% { transform: scaleY(0); } 1.2%,3.8% { transform: scaleY(1); } 40% { transform: scaleY(0); } 41%,43% { transform: scaleY(1); } 44% { transform: scaleY(0); } }
+@keyframes fxHello { 0% { opacity: 0; transform: translate(-50%, 10px) scale(.8); } 12% { opacity: 1; transform: translate(-50%, 0) scale(1); } 80% { opacity: 1; } 100% { opacity: 0; transform: translate(-50%, -6px) scale(1); } }
+@media (prefers-reduced-motion: reduce) {
+  .fx-play .fx-bob, .fx-play .fx-lid { animation: none; }
+}

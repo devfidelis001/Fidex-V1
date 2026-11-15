@@ -1,0 +1,13 @@
+node_modules/
+backend/.venv/
+__pycache__/
+*.pyc
+.env
+data/db/*.sqlite
+data/db/*.db
+data/logs/*.log
+dist/
+out/
+.DS_Store
+Thumbs.db
+tests/screenshots/

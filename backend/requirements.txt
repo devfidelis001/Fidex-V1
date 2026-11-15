@@ -1,4 +1,8 @@
-# FIDEX AI backend dependencies.
-# Phase 1 Step 1: intentionally empty. Packages are added only when a feature needs them.
 pyautogui==0.9.54
-pyautogui
+Pillow
+numpy
+opencv-python-headless
+dxcam
+comtypes
+uiautomation
+piper-tts
